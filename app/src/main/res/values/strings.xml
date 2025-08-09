@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">GameVerse</string>
+    <string name="appName">GameVerse</string>
+    <string name="titleGameCard">Judul Game</string>
+    <string name="ratingGameCard">⭐️ 9.5</string>
 </resources>
