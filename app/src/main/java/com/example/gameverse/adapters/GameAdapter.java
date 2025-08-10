@@ -23,6 +23,12 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder
         this.gameList = gameList;
     }
 
+    public void setGameList(List<Game> gameList) {
+        this.gameList.clear();
+        this.gameList.addAll(gameList);
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public GameViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
