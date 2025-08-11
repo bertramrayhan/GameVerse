@@ -18,6 +18,13 @@
         <item name="android:textColor">#FFFFFF</item>
     </style>
 
+    <style name="TextAppearance.App.TitleLarge.Bold" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:fontFamily">@font/poppins</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
     <style name="TextAppearance.App.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
         <item name="android:fontFamily">@font/poppins</item>
         <item name="android:textStyle">bold</item>

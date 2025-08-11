@@ -15,6 +15,40 @@
         android:background="@color/primaryBackground"
         >
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/backBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="4dp"
+            android:layout_marginVertical="20dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:id="@+id/backIcon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:srcCompat="@drawable/back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <TextView
+                android:id="@+id/backText"
+                style="@style/TextAppearance.App.TitleLarge.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginHorizontal="11dp"
+                android:text="@string/backBtn"
+                android:gravity="center_vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/backIcon"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <ImageView
             android:id="@+id/backdropImage"
             android:layout_width="0dp"
@@ -41,14 +75,15 @@
 
         <TextView
             android:id="@+id/judulGame"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/titleGameCard"
-            android:layout_marginVertical="17dp"
-            android:layout_marginHorizontal="20dp"
             style="@style/TextAppearance.App.HeadlineSmall"
-            app:layout_constraintTop_toBottomOf="@id/backdropImage"
-            app:layout_constraintStart_toEndOf="@id/posterImage"/>
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="17dp"
+            android:text="@string/titleGameCard"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/posterImage"
+            app:layout_constraintTop_toBottomOf="@id/backdropImage" />
 
         <TextView
             android:id="@+id/rating"
@@ -72,13 +107,13 @@
 
         <TextView
             android:id="@+id/textView6"
+            style="@style/TextAppearance.App.HeadlineSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="40dp"
             android:text="@string/synopsis"
-            android:layout_marginVertical="16dp"
-            style="@style/TextAppearance.App.HeadlineSmall"
-            app:layout_constraintTop_toBottomOf="@id/posterImage"
-            app:layout_constraintStart_toStartOf="@id/posterImage"/>
+            app:layout_constraintStart_toStartOf="@id/posterImage"
+            app:layout_constraintTop_toBottomOf="@id/releaseDate" />
 
         <View
             android:id="@+id/divider"

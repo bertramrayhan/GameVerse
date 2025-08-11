@@ -3,5 +3,6 @@
     <string name="titleGameCard">Judul Game</string>
     <string name="ratingGameCard">⭐️ 9.5</string>
     <string name="releaseDate">February 14, 2017</string>
-    <string name="synopsis">synopsis</string>
+    <string name="synopsis">Synopsis</string>
+    <string name="backBtn">Back</string>
 </resources>

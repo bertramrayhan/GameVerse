@@ -1,5 +1,7 @@
 package com.example.gameverse.adapters;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.gameverse.DetailActivity;
 import com.example.gameverse.R;
 import com.example.gameverse.models.Game;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -44,6 +47,21 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder
         Glide.with(holder.itemView.getContext())
                 .load(currentGame.getBackgroundImage())
                 .into(holder.posterGame);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                int gameId = currentGame.getId();
+
+                Context context = v.getContext();
+
+                Intent intent = new Intent(context, DetailActivity.class);
+
+                intent.putExtra("GAME_ID", gameId);
+
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
