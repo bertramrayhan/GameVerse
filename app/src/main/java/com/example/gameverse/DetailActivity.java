@@ -1,8 +1,10 @@
 package com.example.gameverse;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,6 +34,7 @@ public class DetailActivity extends AppCompatActivity {
     private TextView judulGame, rating, releaseDate, synopsis;
     private ImageView backdropImage;
     private ShapeableImageView posterImage;
+    private ConstraintLayout backBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +53,21 @@ public class DetailActivity extends AppCompatActivity {
         synopsis = findViewById(R.id.synopsis);
         backdropImage = findViewById(R.id.backdropImage);
         posterImage = findViewById(R.id.posterImage);
+        backBtn = findViewById(R.id.backBtn);
 
         Intent intent = getIntent();
         int gameId = intent.getIntExtra("GAME_ID", -1);
         fetchDetailGameData(gameId);
+
+        backBtn.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Context context = v.getContext();
+                Intent intent = new Intent(context, MainActivity.class);
+                context.startActivity(intent);
+            }
+        });
     }
 
     private void fetchDetailGameData(int gameId){

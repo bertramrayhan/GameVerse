@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView gamesRecyclerView;
     private GameAdapter gameAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

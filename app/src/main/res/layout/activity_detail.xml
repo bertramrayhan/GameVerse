@@ -40,7 +40,7 @@
                 style="@style/TextAppearance.App.TitleLarge.Bold"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:layout_marginHorizontal="11dp"
+                android:layout_marginHorizontal="20dp"
                 android:text="@string/backBtn"
                 android:gravity="center_vertical"
                 app:layout_constraintEnd_toEndOf="parent"
