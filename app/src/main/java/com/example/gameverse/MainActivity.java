@@ -1,6 +1,8 @@
 package com.example.gameverse;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView gamesRecyclerView;
     private GameAdapter gameAdapter;
+    private ProgressBar loadingBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        loadingBar = findViewById(R.id.loadingBar);
+
         gamesRecyclerView = findViewById(R.id.gamesRecyclerView);
         gamesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -48,12 +53,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fetchGamesData(){
+        gamesRecyclerView.setVisibility(View.GONE);
+        loadingBar.setVisibility(View.VISIBLE);
+
         RawgApiService apiService = ApiClient.getClient().create(RawgApiService.class);
         Call<GameResponse> call = apiService.getPopularGames(Rahasia.API_KEY);
 
         call.enqueue(new Callback<GameResponse>() {
             @Override
             public void onResponse(Call<GameResponse> call, Response<GameResponse> response) {
+                loadingBar.setVisibility(View.GONE);
+                gamesRecyclerView.setVisibility(View.VISIBLE);
+
                 if(response.isSuccessful() && response.body() != null){
                     List<Game> gameList = response.body().getResults();
                     gameAdapter.setGameList(gameList);
@@ -62,7 +73,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<GameResponse> call, Throwable t) {
-
+                loadingBar.setVisibility(View.GONE);
+                gamesRecyclerView.setVisibility(View.VISIBLE);
             }
         });
     }
