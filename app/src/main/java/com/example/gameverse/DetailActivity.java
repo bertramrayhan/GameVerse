@@ -59,15 +59,7 @@ public class DetailActivity extends AppCompatActivity {
         int gameId = intent.getIntExtra("GAME_ID", -1);
         fetchDetailGameData(gameId);
 
-        backBtn.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                Context context = v.getContext();
-                Intent intent = new Intent(context, MainActivity.class);
-                context.startActivity(intent);
-            }
-        });
+        backBtn.setOnClickListener(v -> finish());
     }
 
     private void fetchDetailGameData(int gameId){
