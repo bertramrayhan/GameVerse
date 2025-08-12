@@ -9,24 +9,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gameverse.adapters.GameAdapter;
 import com.example.gameverse.models.Game;
-import com.example.gameverse.models.GameResponse;
-import com.example.gameverse.network.ApiClient;
-import com.example.gameverse.network.RawgApiService;
+import com.example.gameverse.viewModels.MainViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class MainActivity extends AppCompatActivity {
 
+    private MainViewModel mainViewModel;
     private RecyclerView gamesRecyclerView;
     private GameAdapter gameAdapter;
     private ProgressBar loadingBar;
@@ -49,32 +46,28 @@ public class MainActivity extends AppCompatActivity {
 
         gameAdapter = new GameAdapter(new ArrayList<>());
         gamesRecyclerView.setAdapter(gameAdapter);
-        fetchGamesData();
-    }
 
-    private void fetchGamesData(){
-        gamesRecyclerView.setVisibility(View.GONE);
-        loadingBar.setVisibility(View.VISIBLE);
+        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        mainViewModel.fetchGamesData();
 
-        RawgApiService apiService = ApiClient.getClient().create(RawgApiService.class);
-        Call<GameResponse> call = apiService.getPopularGames(Rahasia.API_KEY);
-
-        call.enqueue(new Callback<GameResponse>() {
+        mainViewModel.getIsLoading().observe(this, new Observer<Boolean>() {
             @Override
-            public void onResponse(Call<GameResponse> call, Response<GameResponse> response) {
-                loadingBar.setVisibility(View.GONE);
-                gamesRecyclerView.setVisibility(View.VISIBLE);
-
-                if(response.isSuccessful() && response.body() != null){
-                    List<Game> gameList = response.body().getResults();
-                    gameAdapter.setGameList(gameList);
+            public void onChanged(Boolean isLoading) {
+                if(isLoading){
+                    gamesRecyclerView.setVisibility(View.GONE);
+                    loadingBar.setVisibility(View.VISIBLE);
+                }else {
+                    loadingBar.setVisibility(View.GONE);
+                    gamesRecyclerView.setVisibility(View.VISIBLE);
                 }
             }
+        });
+
+        mainViewModel.getGameListLiveData().observe(this, new Observer<List<Game>>() {
 
             @Override
-            public void onFailure(Call<GameResponse> call, Throwable t) {
-                loadingBar.setVisibility(View.GONE);
-                gamesRecyclerView.setVisibility(View.VISIBLE);
+            public void onChanged(List<Game> gameList) {
+                gameAdapter.setGameList(gameList);
             }
         });
     }

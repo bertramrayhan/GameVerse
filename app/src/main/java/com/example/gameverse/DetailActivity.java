@@ -1,10 +1,8 @@
 package com.example.gameverse;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,23 +12,21 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.example.gameverse.models.GameDetail;
-import com.example.gameverse.network.ApiClient;
-import com.example.gameverse.network.RawgApiService;
+import com.example.gameverse.viewModels.DetailViewModel;
 import com.google.android.material.imageview.ShapeableImageView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class DetailActivity extends AppCompatActivity {
 
+    private DetailViewModel detailViewModel;
     private TextView judulGame, rating, releaseDate, synopsis;
     private ImageView backdropImage;
     private ShapeableImageView posterImage;
@@ -57,50 +53,38 @@ public class DetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         int gameId = intent.getIntExtra("GAME_ID", -1);
-        fetchDetailGameData(gameId);
 
-        backBtn.setOnClickListener(v -> finish());
-    }
-
-    private void fetchDetailGameData(int gameId){
-        RawgApiService apiService = ApiClient.getClient().create(RawgApiService.class);
-        Call<GameDetail> call = apiService.getDetailGames(gameId, Rahasia.API_KEY);
-
-        call.enqueue(new Callback<GameDetail>() {
+        detailViewModel = new ViewModelProvider(this).get(DetailViewModel.class);
+        detailViewModel.fetchDetailGameData(gameId);
+        detailViewModel.getGameDetailLiveData().observe(this, new Observer<GameDetail>(){
 
             @Override
-            public void onResponse(Call<GameDetail> call, Response<GameDetail> response) {
-                if(response.isSuccessful() && response.body() != null){
-                    GameDetail gameDetail = response.body();
-                    Glide.with(DetailActivity.this)
-                            .load(gameDetail.getBackgroundImage())
-                            .into(backdropImage);
+            public void onChanged(GameDetail gameDetail) {
+                Glide.with(DetailActivity.this)
+                        .load(gameDetail.getBackgroundImage())
+                        .into(backdropImage);
 
-                    Glide.with(DetailActivity.this)
-                            .load(gameDetail.getBackgroundImage())
-                            .into(posterImage);
+                Glide.with(DetailActivity.this)
+                        .load(gameDetail.getBackgroundImage())
+                        .into(posterImage);
 
-                    judulGame.setText(gameDetail.getName());
-                    rating.setText("⭐ " + gameDetail.getRating());
+                judulGame.setText(gameDetail.getName());
+                rating.setText("⭐ " + gameDetail.getRating());
 
-                    try {
-                        String rawReleaseDate = gameDetail.getReleased();
-                        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                        Date dateObject = inputFormat.parse(rawReleaseDate);
-                        SimpleDateFormat outputFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
-                        releaseDate.setText(outputFormat.format(dateObject));
-                    } catch(Exception e){
-                        Log.e("DetailActivity", e.getMessage());
-                    }
-
-                    synopsis.setText(gameDetail.getDescriptionRaw());
+                try {
+                    String rawReleaseDate = gameDetail.getReleased();
+                    SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                    Date dateObject = inputFormat.parse(rawReleaseDate);
+                    SimpleDateFormat outputFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
+                    releaseDate.setText(outputFormat.format(dateObject));
+                } catch(Exception e){
+                    Log.e("DetailActivity", e.getMessage());
                 }
-            }
 
-            @Override
-            public void onFailure(Call<GameDetail> call, Throwable t) {
-
+                synopsis.setText(gameDetail.getDescriptionRaw());
             }
         });
+
+        backBtn.setOnClickListener(v -> finish());
     }
 }
