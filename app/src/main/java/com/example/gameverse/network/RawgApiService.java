@@ -14,5 +14,12 @@ public interface RawgApiService {
 
     @GET("games/{id}")
     Call<GameDetail> getDetailGames(@Path("id") int gameId, @Query("key") String apiKey);
+
+    @GET("games")
+    Call<GameResponse> getUpcomingGames(
+            @Query("key") String apiKey,
+            @Query("dates") String dateRange,
+            @Query("ordering") String ordering
+    );
 }
 
